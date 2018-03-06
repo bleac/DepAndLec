@@ -18,7 +18,7 @@ public class Department {
 
     private String headId;
 
-    @ManyToMany//(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "department_lector", joinColumns =
     @JoinColumn(name = "id_department"), inverseJoinColumns =
     @JoinColumn(name = "id_lector"))
