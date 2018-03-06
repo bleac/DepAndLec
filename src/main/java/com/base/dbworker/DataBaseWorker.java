@@ -1,6 +1,7 @@
 package com.base.dbworker;
 
 import com.base.entity.Department;
+import com.base.entity.Lector;
 import org.hibernate.Hibernate;
 
 import javax.persistence.EntityManager;
@@ -11,6 +12,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.sql.SQLException;
+import java.util.List;
+
+import static com.base.util.PrettyFormatter.extractPrettyNamesForLectors;
 
 public class DataBaseWorker {
 
@@ -24,6 +28,15 @@ public class DataBaseWorker {
         entityManager.close();
 
         return department;
+    }
+
+    public String searchBy(String term) {
+        EntityManager entityManager = openEntityManager();
+        Query query = entityManager.createQuery("SELECT l FROM Lector l WHERE l.firstName LIKE :term OR l.lastName LIKE :term");
+        query.setParameter( "term", "%"+term+"%" );
+        List<Lector> lectors = query.getResultList();
+        entityManager.close();
+        return extractPrettyNamesForLectors(lectors);
     }
 
     /** The entity manager factory. */
